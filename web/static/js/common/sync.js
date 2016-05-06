@@ -6,7 +6,9 @@ export const syncPosition = (sprite, channel, event) => {
   event.add(sprite => sendPosition(sprite, channel))
 }
 
-// sendPosition :: Sprite -> Channel -> String
+// sendPosition :: Sprite -> Channel -> Push
 export const sendPosition = (sprite, channel) => {
-  console.log(serializePosition(sprite))
+  const message = serializePosition(sprite)
+  console.log("Sending message", message)
+  channel.push("shout", message)
 }
