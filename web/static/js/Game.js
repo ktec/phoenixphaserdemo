@@ -1,4 +1,5 @@
 import {Lobby} from "./states/Lobby"
+import {joinChannel} from "./common/channels"
 
 export class Game extends Phaser.Game {
 
@@ -12,6 +13,13 @@ export class Game extends Phaser.Game {
 
   start(socket) {
     socket.connect()
-  }
 
+    // create and join the lobby channel
+    const channel = socket.channel("games:lobby", {})
+
+    joinChannel(channel, () => {
+      console.log("Joined successfully")
+      this.state.start("lobby", true, false, channel)
+    })
+  }
 }
