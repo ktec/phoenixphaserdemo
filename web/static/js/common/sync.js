@@ -18,6 +18,8 @@ export const sendPosition = (sprite, channel) => {
 export const receivePosition = (sprite, channel) => {
   const callback = (message) => {
     console.log("Received message", message)
+    const {x,y} = message
+    sprite.position.setTo(x, y)
   }
   channel.on("position", callback)
 }
