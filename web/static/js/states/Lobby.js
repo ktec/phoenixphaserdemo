@@ -1,4 +1,4 @@
-import { createLabel } from "../common/labels"
+import { createSyncLabel } from "../common/sync_labels"
 
 export class Lobby extends Phaser.State {
   init(...options) {
@@ -7,9 +7,6 @@ export class Lobby extends Phaser.State {
   }
 
   create() {
-    const label = createLabel(this, "Hello world")
-    label.anchor.setTo(0.5)
-    label.inputEnabled = true
-    label.input.enableDrag()
+    const label = createSyncLabel(this, "Hello world", this.channel)
   }
 }
