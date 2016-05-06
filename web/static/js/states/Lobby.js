@@ -3,7 +3,7 @@ import { createLabel } from "../common/labels"
 export class Lobby extends Phaser.State {
   init(...options) {
     const [channel] = options
-    console.log(channel)
+    this.channel = channel
   }
 
   create() {
