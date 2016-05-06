@@ -11,7 +11,7 @@ export const syncPosition = (sprite, channel, event) => {
 export const sendPosition = (sprite, channel) => {
   const message = serializePosition(sprite)
   console.log("Sending message", message)
-  channel.push("shout", message)
+  channel.push("position", message)
 }
 
 // receivePosition = Sprite -> Channel -> Push
@@ -19,5 +19,5 @@ export const receivePosition = (sprite, channel) => {
   const callback = (message) => {
     console.log("Received message", message)
   }
-  channel.on("shout", callback)
+  channel.on("position", callback)
 }
