@@ -8,9 +8,10 @@ export class Game extends Phaser.Game {
 
     // set up game state [name, class, autostart]
     this.state.add("lobby", Lobby, false)
+  }
 
-    // let's go!
-    this.state.start("lobby")
+  start(socket) {
+    socket.connect()
   }
 
 }
