@@ -1,12 +1,19 @@
 defmodule Demo.LobbyChannel do
   use Demo.Web, :channel
+  require Logger
 
   def join("games:lobby", payload, socket) do
     if authorized?(payload) do
+      Logger.debug "#{socket.assigns.user_id} joined the Lobby channel"
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
     end
+  end
+
+  def terminate(_reason, socket) do
+    Logger.debug "#{socket.assigns.user_id} left the Lobby channel"
+    socket
   end
 
   # broadcast position data to everyone else

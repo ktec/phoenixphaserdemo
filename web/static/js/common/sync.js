@@ -1,5 +1,7 @@
+const BROADCAST_FREQUENCY = 16 // 60fps approx
+
 // serializePosition :: Sprite -> Object
-export const serializePosition = ({x, y}) => Object.assign({x, y})
+export const serializePosition = ({id, x, y}) => Object.assign({id, x, y})
 
 // syncPosition :: Sprite -> Channel -> Event -> Function -> Event
 export const syncPosition = (sprite, channel, event) => {
@@ -9,17 +11,29 @@ export const syncPosition = (sprite, channel, event) => {
 
 // sendPosition :: Sprite -> Channel -> Push
 export const sendPosition = (sprite, channel) => {
-  const message = serializePosition(sprite)
-  console.log("Sending message", message)
-  channel.push("position", message)
+  channel.push("position", serializePosition(sprite))
 }
 
 // receivePosition = Sprite -> Channel -> Push
 export const receivePosition = (sprite, channel) => {
-  const callback = (message) => {
-    console.log("Received message", message)
-    const {x,y} = message
-    sprite.position.setTo(x, y)
+  const callback = ({id, x, y}) => {
+    if (id === sprite.id) { sprite.position.setTo(x, y) }
   }
   channel.on("position", callback)
+  // remove the callback when the sprite is destroyed
+  removeCallbackOnDestroy(sprite, channel, callback)
+}
+
+const removeCallbackOnDestroy = (sprite, channel, callback) => {
+  sprite.events.onDestroy.add(() => {
+    channel.bindings = channel.bindings.filter(b => {
+      return b.callback !== callback
+    })
+  })
+}
+
+// sendMessage :: Timer -> Sprite -> TimerEvent
+export const sharePosition = (sprite, channel, framerate = BROADCAST_FREQUENCY) => {
+  const timer = sprite.game.time.events
+  timer.loop(framerate, () => { sendPosition(sprite, channel) })
 }
