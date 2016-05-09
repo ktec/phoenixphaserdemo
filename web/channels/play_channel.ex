@@ -1,11 +1,17 @@
 defmodule Demo.PlayChannel do
   use Demo.Web, :channel
+  alias Demo.Game
   require Logger
 
   def join("games:play", payload, socket) do
     if authorized?(payload) do
       Logger.debug "#{socket.assigns.user_id} joined the Play channel"
-      {:ok, socket}
+      case Game.join(socket.assigns.user_id) do
+        {:ok, response} ->
+          {:ok, response, socket}
+        error ->
+          error
+      end
     else
       {:error, %{reason: "unauthorized"}}
     end
@@ -13,6 +19,7 @@ defmodule Demo.PlayChannel do
 
   def terminate(_reason, socket) do
     Logger.debug "#{socket.assigns.user_id} left the Play channel"
+    Game.leave(socket.assigns.user_id)
     socket
   end
 
