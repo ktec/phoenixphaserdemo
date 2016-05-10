@@ -14,33 +14,33 @@ export class Game extends Phaser.Game {
   }
 
   start(socket) {
-    console.log("GAME STARTING")
+    // console.log("GAME STARTING")
     socket.connect()
     console.log(socket)
 
     // set up channels
     this.gotoLobby = () => {
-      console.log("create Lobby channel")
+      // console.log("create Lobby channel")
       const channel = socket.channel("games:lobby", {})
 
-      console.log("join Lobby channel")
+      // console.log("join Lobby channel")
       joinChannel(channel, () => {
 
-        console.log("successfully joined Lobby channel")
+        // console.log("successfully joined Lobby channel")
         this.state.start("lobby", true, false, channel)
 
       })
     }
 
     this.gotoPlay = () => {
-      console.log("create Play channel")
+      // console.log("create Play channel")
       const channel = socket.channel("games:play", {})
 
-      console.log("join Play channel")
-      joinChannel(channel, () => {
+      // console.log("join Play channel")
+      joinChannel(channel, (...options) => {
 
-        console.log("successfully joined Play channel")
-        this.state.start("play", true, false, channel)
+        // console.log("successfully joined Play channel")
+        this.state.start("play", true, false, channel, ...options)
 
       })
     }

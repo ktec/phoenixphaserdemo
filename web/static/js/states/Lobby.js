@@ -18,7 +18,7 @@ export class Lobby extends Phaser.State {
   }
 
   init(...options) {
-    console.log("starting Lobby state")
+    // console.log("starting Lobby state")
     const [channel] = options
     this.channel = channel
   }

@@ -2,15 +2,9 @@
 export const joinChannel = (channel, success, failure, timeout) => {
   channel
     .join()
-    .receive("ok", (rsp) => {
-      console.debug(channel)
-      success(rsp) || joinOk(rsp)
-    })
+    .receive("ok", success || joinOk)
     .receive("error", failure || joinError)
-    .receive("timeout", (rsp) => {
-      console.debug(channel)
-      timeout(rsp) || joinTimeout(rsp)
-    })
+    .receive("timeout", timeout || joinTimeout)
   return channel
 }
 

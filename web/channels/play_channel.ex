@@ -32,7 +32,15 @@ defmodule Demo.PlayChannel do
 
   # broadcast position data to everyone else
   def handle_in("position", payload, socket) do
-    broadcast_from socket, "position", payload
+    # broadcast_from socket, "position", payload
+    Game.set_position(socket.assigns.user_id, payload)
+    {:noreply, socket}
+  end
+
+  # broadcast position data to everyone else
+  def handle_in("collision", payload, socket) do
+    # broadcast_from socket, "position", payload
+    Game.collision(socket.assigns.user_id, payload)
     {:noreply, socket}
   end
 

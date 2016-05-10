@@ -1,5 +1,6 @@
 defmodule Demo.PlayerSupervisor do
-  alias Demo.Player
+  alias Demo.{Player, Randomise}
+  require Logger
 
   def start_link do
     import Supervisor.Spec, warn: false
@@ -10,14 +11,17 @@ defmodule Demo.PlayerSupervisor do
     Supervisor.start_link(children, opts)
   end
 
-  def start(id) do
-    Supervisor.start_child(__MODULE__, [[id]])
+  def start(user_id) do
+    Supervisor.start_child(__MODULE__, [[user_id, shape_id]])
   end
 
-  def stop(id) do
-    pid = :global.whereis_name(id)
-    Supervisor.terminate_child(__MODULE__, pid)
+  def stop(user_id) do
+    Supervisor.terminate_child(__MODULE__, get_pid(user_id))
     # Player.stop(pid)
+  end
+
+  def get_pid(user_id) do
+    :global.whereis_name(user_id)
   end
 
   def get_all do
@@ -26,4 +30,11 @@ defmodule Demo.PlayerSupervisor do
   end
 
   defp inspect_state({_, pid, _, _}), do: Player.inspect(pid)
+
+  defp shape_id do
+    # %{active: active} = Supervisor.count_children(__MODULE__)
+    # rem(active, 3)
+    Randomise.reseed_generator
+    Randomise.random(3)
+  end
 end

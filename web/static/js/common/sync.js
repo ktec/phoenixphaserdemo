@@ -32,7 +32,7 @@ const removeCallbackOnDestroy = (sprite, channel, callback) => {
   })
 }
 
-// sendMessage :: Timer -> Sprite -> TimerEvent
+// sharePosition :: Timer -> Sprite -> TimerEvent
 export const sharePosition = (sprite, channel, framerate = BROADCAST_FREQUENCY) => {
   const timer = sprite.game.time.events
   timer.loop(framerate, () => { sendPosition(sprite, channel) })
