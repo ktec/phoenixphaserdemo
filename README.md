@@ -1,3 +1,5 @@
+Video: https://www.youtube.com/watch?v=I5L9_cXwBcU
+
 # Demo
 
 To start your Phoenix app:
